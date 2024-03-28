@@ -23,9 +23,8 @@ function init () {
 
             //call first sample from list
             let firstEntry = sampleNames[0]
-            //console.log(firstSample)
 
-            //Call first plots to initialize
+            //call plots
             createBar(firstEntry);
             createBubble(firstEntry);
             createDemographics(firstEntry);
@@ -43,7 +42,7 @@ function createBar (sampleID) {
     let sample = results[0];
     
     
-    //assign variables to sample values
+    //assign var to sample values
     let sample_values = sample.sample_values;
     let otu_ids = sample.otu_ids;
     let otu_labels = sample.otu_labels;
@@ -75,7 +74,7 @@ function createBubble (sampleID) {
     let results = samples.filter(sample => sample.id == sampleID);
     let sample = results[0];
     
-    //assign variables to sample values
+    //assign var to sample values
     let sample_values = sample.sample_values
     let otu_ids = sample.otu_ids
     let otu_labels = sample.otu_labels
@@ -112,10 +111,10 @@ function createDemographics (sampleID) {
         let results = metadata.filter(sample => sample.id == sampleID);
         let sample = results[0];
 
-        //select panel from html and set to variable
+        //panel and set variable
         let panel = d3.select("#sample-metadata");
         panel.html("");
-        //loop through each key and append data to panel
+        //loop through key and append 
         for (key in sample) {
             panel.append("h6").text(key.toUpperCase()+": "+sample[key])
         }
