@@ -9,36 +9,35 @@ let data = d3.json(url).then(function(data) {
 //create function to initialize dashboard 
 function init () {
     //create dropdown
-    let dropdownMenu = d3.select("#selDataset");
+    let dropdownM = d3.select("#selDataset");
     //populate dropdown menu
     d3.json(url).then(function(data) {
-        let sampleNames = data.names;
+        let sample_names = data.names;
         //iterate through array and append each name
-        sampleNames.forEach((name) => {
-            //append each value to populate dropdown menu
-            dropdownMenu.append("option")
+        sample_names.forEach((name) => {
+            //append to populate dropdown menu
+            dropdownM.append("option")
             .text(name)
             .property("value", name);
         });
 
             //call first sample from list
-            let firstEntry = sampleNames[0]
+            let first_Entry = sample_names[0]
 
-            //call plots
-            createBar(firstEntry);
-            createBubble(firstEntry);
-            createDemographics(firstEntry);
+            createBar(first_Entry);
+            createBubble(first_Entry);
+            createDemographics(first_Entry);
     });
 
 };
 
 //create function to populate bar chart
-function createBar (sampleID) {
+function createBar (sample_ID) {
     d3.json(url).then((data) => {
         let samples = data.samples;
 
     //apply filter for data 
-    let results = samples.filter(sample => sample.id == sampleID);
+    let results = samples.filter(sample => sample.id == sample_ID);
     let sample = results[0];
     
     
@@ -49,7 +48,7 @@ function createBar (sampleID) {
     
     
     //set trace
-    let trace1 = [
+    let trace = [
         {x: sample_values.slice(0,10).reverse(),
         y: otu_ids.slice(0,10).map(otu_id => "OTU "+otu_id).reverse(),
         text: otu_labels.slice(0,10).reverse(),
@@ -59,19 +58,19 @@ function createBar (sampleID) {
 
     let layout = {title: "Top Ten OTUs"};
 
-    Plotly.newPlot("bar", trace1, layout)
+    Plotly.newPlot("bar", trace, layout)
 
     });
 
 };
 
 //create function to populate bubble chart
-function createBubble (sampleID) {
+function createBubble (sample_ID) {
     d3.json(url).then((data) => {
         let samples = data.samples;
 
     //apply filter for data
-    let results = samples.filter(sample => sample.id == sampleID);
+    let results = samples.filter(sample => sample.id == sample_ID);
     let sample = results[0];
     
     //assign var to sample values
@@ -80,7 +79,7 @@ function createBubble (sampleID) {
     let otu_labels = sample.otu_labels
     
     //set trace
-    let trace2 = [
+    let trace = [
         {x: otu_ids.reverse(),
          y: sample_values.reverse(),
          text: otu_labels.reverse(),
@@ -88,7 +87,6 @@ function createBubble (sampleID) {
          marker:{
             size: sample_values, 
             color: otu_ids,
-            colorscale: "Earth"
          }
          
         }];
@@ -97,18 +95,18 @@ function createBubble (sampleID) {
         xaxis: {title:"OTU ID"}
     };
     
-    Plotly.newPlot("bubble", trace2, layout)
+    Plotly.newPlot("bubble", trace, layout)
 
     });
 };
 
 //create function to populate Demographics info
-function createDemographics (sampleID) {
+function createDemographics (sample_ID) {
     d3.json(url).then((data) => {
         let metadata = data.metadata;
 
         //apply filter for data
-        let results = metadata.filter(sample => sample.id == sampleID);
+        let results = metadata.filter(sample => sample.id == sample_ID);
         let sample = results[0];
 
         //panel and set variable
@@ -124,10 +122,10 @@ function createDemographics (sampleID) {
 
 
 //define function that updates plots when dropdown changes
-function optionChanged(sampleID) {
-    createBar(sampleID);
-    createBubble(sampleID);
-    createDemographics(sampleID);
+function optionChanged(sample_ID) {
+    createBar(sample_ID);
+    createBubble(sample_ID);
+    createDemographics(sample_ID);
 };
 
 init()
